@@ -16,7 +16,7 @@ const CreatePage = () => {
   const [isCurrentLoading, setIsCurrentLoading] = useState(false);
   const [isRightLoading, setIsRightLoading] = useState(false);
   const pb = new PocketBase("https://linkify.pockethost.io");
-
+  const id = 1;
   useEffect(() => {
     // Get the current location
     if (navigator.geolocation) {
@@ -27,6 +27,30 @@ const CreatePage = () => {
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      (async () => {
+        const result = await pb
+          .collection("client")
+          .getFirstListItem(`UID="${id}"`);
+        console.log(result.status);
+        if (result.status == 1) {
+          alert("SOS activated" + " " + result.curlong + " " + result.curlang);
+          const data = {
+            curlong: 0,
+            curlang: 0,
+            status: 0,
+          };
+          const record = await pb
+            .collection("client")
+            .update("lr5n43fwme46jbn", data);
+        }
+      })();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const setCurr = async () => {
