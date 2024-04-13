@@ -170,13 +170,29 @@ const CreatePage = () => {
           Set Current
         </Button>
       </CurrentLocation>
+      <div style={{ width: "100%" }}>
+      <iframe
+        width="100%"
+        height="600"
+        frameborder="0"
+        scrolling="no"
+        marginheight="0"
+        marginwidth="0"
+        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=31.2445781,75.7022453+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+      >
+        <a href="https://www.gps.ie/">gps trackers</a>
+      </iframe>
+    </div>
     </Wrapper>
+    
+   
   );
 };
 
 export default CreatePage;
 
 const Wrapper = styled.div`
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -230,14 +246,15 @@ const Input = styled.input`
 `;
 
 const spin = keyframes`
-  from { transform: rotate(0deg); }
+  from { transform: rotate(0deg); } 
   to { transform: rotate(360deg); }
 `;
 
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
-  background-color: #007bff;
+  background-color: black;
   color: white;
+  font-weight: bold;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
