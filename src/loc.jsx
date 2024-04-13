@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
 import PocketBase from "pocketbase";
 import styled, { css, keyframes } from "styled-components";
+import Modal from "react-modal";
 
 const CreatePage = () => {
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [currentLatitude, setCurrentLatitude] = useState("");
@@ -15,6 +28,8 @@ const CreatePage = () => {
   const [isCenterLoading, setIsCenterLoading] = useState(false);
   const [isCurrentLoading, setIsCurrentLoading] = useState(false);
   const [isRightLoading, setIsRightLoading] = useState(false);
+  const [lat, setLat] = useState(null);
+  const [lon, setLon] = useState(null);
   const pb = new PocketBase("https://linkify.pockethost.io");
   const id = 1;
   useEffect(() => {
@@ -37,7 +52,10 @@ const CreatePage = () => {
           .getFirstListItem(`UID="${id}"`);
         console.log(result.status);
         if (result.status == 1) {
-          alert("SOS activated" + " " + result.curlong + " " + result.curlang);
+          setModalMessage("SOS activated");
+          setLat(result.curlang);
+          setLon(result.curlong);
+          setModalIsOpen(true);
           const data = {
             curlong: 0,
             curlang: 0,
@@ -144,6 +162,29 @@ const CreatePage = () => {
 
   return (
     <Wrapper>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+        contentLabel="SOS Modal"
+      >
+        <h2 style={{ color: "Red" }}>{modalMessage}</h2> {/* dark gray text */}
+        <p>Latitude : {lat}</p>
+        <p>Longitude : {lon}</p>
+        <button
+          style={{
+            backgroundColor: "#007BFF", // blue background
+            color: "#fff", // white text
+            border: "none", // remove border
+            padding: "10px 20px", // add padding
+            borderRadius: "5px", // rounded corners
+            cursor: "pointer", // change cursor on hover
+          }}
+          onClick={() => setModalIsOpen(false)}
+        >
+          Close
+        </button>
+      </Modal>
       <h1>Sixth Sense Client</h1>
       <CardsContainer>
         <Card>
@@ -320,3 +361,20 @@ const CurrentLocation = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 2rem;
 `;
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#f4f4f4", // light gray background
+    borderRadius: "10px", // rounded corners
+    padding: "20px", // inner padding
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.75)", // semi-transparent black background
+  },
+};
